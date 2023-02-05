@@ -81,11 +81,16 @@
                                                          <Button fx:id="second_page_super_good_button" mnemonicParsing="false" onAction="#onGoodThingDone" text="Super good button" />
                                                       </graphic>
                                                    </MenuItem>
+                                                   <MenuItem mnemonicParsing="false" text="Clear everything">
+                                                      <graphic>
+                                                         <Button fx:id="second_page_clear_button1" mnemonicParsing="false" onAction="#onClear" text="Clear button" />
+                                                      </graphic>
+                                                   </MenuItem>
                                                    <MenuItem mnemonicParsing="false" text="It's a place for smth good">
                                                       <graphic>
                                                          <ImageView fx:id="second_page_good_image" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                                             <viewport>
-                                                               <Rectangle2D height="40.0" width="40.0" />
+                                                               <Rectangle2D height="80.0" width="80.0" />
                                                             </viewport>
                                                          </ImageView>
                                                       </graphic>

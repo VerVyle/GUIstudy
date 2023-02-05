@@ -37,7 +37,7 @@ public class ButtonController {
         Button button = (Button) actionEvent.getSource();
         if (button.getText().equals("Good Button")) {
             try {
-                inputStream = new FileInputStream("resources/images/good_image.png");
+                inputStream = new FileInputStream("C:\\Users\\wwwdo\\Desktop\\GUIstudy\\src\\main\\java\\com\\vervyle\\guistudy\\controllers\\good_image.png");
                 second_page_good_image.setImage(new Image(inputStream));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -46,12 +46,16 @@ public class ButtonController {
             return;
         }
         try {
-            inputStream = new FileInputStream("resources/images/good_image.png");
+            inputStream = new FileInputStream("C:\\Users\\wwwdo\\Desktop\\GUIstudy\\src\\main\\java\\com\\vervyle\\guistudy\\controllers\\super_good_image.png");
             second_page_good_image.setImage(new Image(inputStream));
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
     }
-
+    @FXML
+    void onClear(ActionEvent actionEvent) {
+        onClicked(actionEvent);
+        second_page_good_image.setImage(null);
+    }
 }
