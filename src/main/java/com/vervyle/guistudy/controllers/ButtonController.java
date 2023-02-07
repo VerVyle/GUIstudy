@@ -3,156 +3,193 @@ package com.vervyle.guistudy.controllers;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
-import java.time.Duration;
-import java.util.List;
+import java.util.Random;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class ButtonController implements Initializable {
 
-    String oldStyle;
-    boolean isChanged;
     @FXML
-    Button second_page_button;
+    private RadioButton fourth_page_rb1;
     @FXML
-    Button third_page_button;
+    private RadioButton fourth_page_rb2;
     @FXML
-    Button second_page_super_good_button;
+    private RadioButton fourth_page_rb3;
     @FXML
-    TextField fifth_tab_text_field;
+    private TabPane main_tab_pane;
     @FXML
-    Button second_page_button_back;
+    private TextArea fourth_page_text_area;
     @FXML
-    Button second_page_good_button;
+    private Button second_page_button_back;
     @FXML
-    ImageView second_page_good_image;
+    private Button second_page_good_button;
     @FXML
-    TextField first_page_text_field;
-
+    private ImageView second_page_good_image;
     @FXML
-    TextField sixth_page_text_field;
+    private TextField first_page_text_field;
     @FXML
-    private Tab sixth_page;
+    private TextField sixth_page_text_field;
     @FXML
     private ToggleButton sixth_page_start_button;
     @FXML
-    private ColorPicker sixth_page_color_picker;
-
-    @FXML
-    private HBox sixth_page_hbox;
-
-    @FXML
-    private AnchorPane sixth_page_pane;
-
-    @FXML
-    private Spinner<?> sixth_page_spinner;
-
-    @FXML
-    private ToolBar sixth_page_toolbar;
-    @FXML
     private Button sixth_page_cancel_button;
     @FXML
-    private VBox sixth_page_vbox;
+    private HBox seventh_page_new_file_creater;
     @FXML
     private ProgressIndicator sixth_page_progress_indicator;
     @FXML
     private ProgressBar sixth_page_progress_bar;
+    @FXML
+    private RadioMenuItem menu_auto_save;
+    @FXML
+    private TextField fifth_page_text_field_first;
+    @FXML
+    private TextField fifth_page_text_field_second;
+    @FXML
+    private RadioMenuItem menu_manual_save;
+    @FXML
+    AnchorPane seventh_page_split_pane_left_pane;
+    @FXML
+    SplitPane seventh_pane_split_pane;
 
     @FXML
-    void onClicked(ActionEvent actionEvent) {
+    void onButtonClicked(ActionEvent actionEvent) {
         Button button = (Button) actionEvent.getSource();
         first_page_text_field.setText(button.getText());
     }
 
-    @FXML
-    void onGoodThingDone(ActionEvent actionEvent) {
-        onClicked(actionEvent);
-        InputStream inputStream;
-        Button button = (Button) actionEvent.getSource();
-        if (button.getText().equals("Good Button")) {
-            try {
-                inputStream = new FileInputStream("C:\\Users\\timur\\IdeaProjects\\GUIstudy\\src\\main\\java\\com\\vervyle\\guistudy\\controllers\\good_image.png");
-                second_page_good_image.setImage(new Image(inputStream));
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println(e.getMessage());
-            }
-            return;
-        }
+    private void firstPageInit() {
+        System.out.println("FirstPage is initialized");
+    }
+
+    private FileInputStream makeFileInputStream(String path) {
+        FileInputStream inputStream = null;
         try {
-            inputStream = new FileInputStream("C:\\Users\\timur\\IdeaProjects\\GUIstudy\\src\\main\\java\\com\\vervyle\\guistudy\\controllers\\super_good_image.png");
-            second_page_good_image.setImage(new Image(inputStream));
-        } catch (Exception e) {
+            inputStream = new FileInputStream(path);
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
+        return inputStream;
     }
 
     @FXML
-    void onClear(ActionEvent actionEvent) {
-        onClicked(actionEvent);
+    private void secondPageImageViewClear(ActionEvent actionEvent) {
         second_page_good_image.setImage(null);
     }
 
     @FXML
-    void backgroundChange(ActionEvent actionEvent) {
-        onClicked(actionEvent);
+    private void secondPageImageViewSetImage(ActionEvent actionEvent) {
+        onButtonClicked(actionEvent);
         Button button = (Button) actionEvent.getSource();
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                String bstyle = String.format("-fx-text-fill: %s;-fx-fill: %s;-fx-background-color: %s;", "#FFFFFF", "#FFFFFF", "#FFFFFF");
-                if (!isChanged) {
-                    isChanged = true;
-                    oldStyle = button.getStyle();
-                    button.setStyle(bstyle);
-                    return;
-                }
-                isChanged = false;
-                button.setStyle(oldStyle);
-            }
-        };
-        timer.scheduleAtFixedRate(task, 0, 2000);
-    }
-
-    class MyTask extends Task<Double> {
-        @Override
-        protected Double call() throws Exception {
-            Double progress = Double.valueOf(0);
-            while (progress < 1.0) {
-                progress += 0.1;
-                this.updateProgress(progress, 1.0);
-                this.updateMessage(String.valueOf(progress));
-                Thread.sleep(500);
-            }
-            return progress;
+        String path = "C:\\Users\\wwwdo\\Desktop\\GUIstudy\\src\\main\\resources\\com\\vervyle\\guistudy\\images\\";
+        path += (button.equals(second_page_good_button) ?
+                "good_image.png" :
+                "super_good_image.png");
+        System.out.println(path);
+        FileInputStream inputStream = makeFileInputStream(path);
+        if (inputStream == null) {
+            System.out.println("image is not found");
+            return;
         }
+        second_page_good_image.setImage(new Image(inputStream));
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    @FXML
+    void SecondPageButtonBackgroundChange(ActionEvent actionEvent) {
+        onButtonClicked(actionEvent);
+        Random random = new Random();
+        String rgbColor = "rgb(" + random.nextInt(256) + "," + random.nextInt(256) + "," + random.nextInt(256) + ");";
+        second_page_button_back.setStyle("-fx-background-color:" + rgbColor);
+    }
+
+    private void secondPageInit() {
+        System.out.println("SecondPage is initialized");
+    }
+
+    private void thirdPageInit() {
+        System.out.println("ThirdPage is initialized");
+    }
+
+    /**
+     * initializes radio buttons on fourthPage in app
+     */
+    private void fourthPageRadioButtonInit() {
+        ToggleGroup fourthPageToggleGroup = new ToggleGroup();
+        fourth_page_rb1.setToggleGroup(fourthPageToggleGroup);
+        fourth_page_rb2.setToggleGroup(fourthPageToggleGroup);
+        fourth_page_rb3.setToggleGroup(fourthPageToggleGroup);
+
+
+        fourth_page_rb1.setOnAction(actionEvent -> {
+            fourth_page_text_area.setText("Selected radio button: " + fourth_page_rb1.getText());
+        });
+        fourth_page_rb2.setOnAction(actionEvent -> {
+            fourth_page_text_area.setText("Selected radio button: " + fourth_page_rb2.getText());
+        });
+        fourth_page_rb3.setOnAction(actionEvent -> {
+            fourth_page_text_area.setText("Selected radio button: " + fourth_page_rb3.getText());
+        });
+    }
+
+    private void fourthPageInit() {
+        fourthPageRadioButtonInit();
+        System.out.println("FourthPage is initialized");
+    }
+
+    /**
+     * initializes MouseEvent.MOUSE_MOVED event handlers on fifthPage
+     * first textField listens to movements only inside it
+     * second textField listens to movements in all the scene
+     */
+    private void fifthPageEventHandlersInit() {
+        String text = "Cursor is outside the text field!";
+        fifth_page_text_field_first.setOnMouseMoved(event -> {
+            String msg =
+                    "(x: " + event.getX() + ", y: " + event.getY() + ") -- " +
+                            "(sceneX: " + event.getSceneX() + ", sceneY: " + event.getSceneY() + ") -- " +
+                            "(screenX: " + event.getScreenX() + ", screenY: " + event.getScreenY() + ")";
+
+            fifth_page_text_field_second.setText(msg);
+            fifth_page_text_field_first.setText(msg);
+        });
+        fifth_page_text_field_first.setOnMouseExited(mouseEvent -> {
+            fifth_page_text_field_first.setText(text);
+        });
+        main_tab_pane.setOnMouseMoved(event -> {
+            String msg =
+                    "(x: " + event.getX() + ", y: " + event.getY() + ") -- " +
+                            "(sceneX: " + event.getSceneX() + ", sceneY: " + event.getSceneY() + ") -- " +
+                            "(screenX: " + event.getScreenX() + ", screenY: " + event.getScreenY() + ")";
+
+            fifth_page_text_field_second.setText(msg);
+        });
+        fifth_page_text_field_second.setOnMouseMoved(event -> {
+            String msg =
+                    "(x: " + event.getX() + ", y: " + event.getY() + ") -- " +
+                            "(sceneX: " + event.getSceneX() + ", sceneY: " + event.getSceneY() + ") -- " +
+                            "(screenX: " + event.getScreenX() + ", screenY: " + event.getScreenY() + ")";
+
+            fifth_page_text_field_second.setText(msg);
+        });
+    }
+
+    private void fifthPageInit() {
+        fifthPageEventHandlersInit();
+        System.out.println("FifthPage is initialized");
+    }
+
+    private void sixthPageInit() {
         sixth_page_cancel_button.setDisable(true);
-        final Label label = new Label();
-        label.setMinWidth(250);
-        label.setTextFill(Color.BLUE);
         sixth_page_start_button.setOnAction(actionEvent -> {
             sixth_page_start_button.setDisable(true);
             sixth_page_cancel_button.setDisable(false);
@@ -186,21 +223,61 @@ public class ButtonController implements Initializable {
                 sixth_page_progress_indicator.setProgress(0);
             });
             new Thread(myTask).start();
+        });
+        System.out.println("SixthPage is initialized");
+    }
 
-        });
-        String text = "Cursor is outside the text field!";
-        isChanged = false;
-        fifth_tab_text_field.setText(text);
-        fifth_tab_text_field.setOnMouseMoved(event -> {
-            String msg =
-                    "(x: " + event.getX() + ", y: " + event.getY() + ") -- " +
-                            "(sceneX: " + event.getSceneX() + ", sceneY: " + event.getSceneY() + ") -- " +
-                            "(screenX: " + event.getScreenX() + ", screenY: " + event.getScreenY() + ")";
+    /**
+     * inner class for updating a counter 0..1.0 every 0.5 seconds
+     * starts in a new Thread
+     */
+    static class MyTask extends Task<Double> {
+        @Override
+        protected Double call() throws Exception {
+            Double progress = (double) 0;
+            while (progress < 1.0) {
+                progress += 0.1;
+                this.updateProgress(progress, 1.0);
+                this.updateMessage(String.valueOf(progress));
+                Thread.sleep(500);
+            }
+            return progress;
+        }
+    }
 
-            fifth_tab_text_field.setText(msg);
-        });
-        fifth_tab_text_field.setOnMouseExited(mouseEvent -> {
-            fifth_tab_text_field.setText(text);
-        });
+    /**
+     *
+     */
+    private void seventhPageMenuRadioButtonInit() {
+        ToggleGroup toggleGroup = new ToggleGroup();
+        menu_auto_save.setToggleGroup(toggleGroup);
+        menu_manual_save.setToggleGroup(toggleGroup);
+    }
+
+    @FXML
+    public void seventhPageFileManagerOpen(ActionEvent actionEvent) {
+        seventh_page_new_file_creater.setVisible(true);
+    }
+
+    @FXML
+    public void seventhPageFileManagerClose(ActionEvent actionEvent) {
+        seventh_page_new_file_creater.setVisible(false);
+    }
+
+    private void seventhPageInit() {
+        seventhPageMenuRadioButtonInit();
+        seventh_page_new_file_creater.setVisible(false);
+        System.out.println("SeventhPage is initialized");
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        firstPageInit();
+        secondPageInit();
+        thirdPageInit();
+        fourthPageInit();
+        fifthPageInit();
+        sixthPageInit();
+        seventhPageInit();
     }
 }

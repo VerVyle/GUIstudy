@@ -5,13 +5,20 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.Scene?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.CustomMenuItem?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
@@ -19,7 +26,6 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -33,10 +39,10 @@
 
 <Stage height="720.0" title="LW1_OOP_GUI" width="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vervyle.guistudy.controllers.ButtonController">
     <scene>
-        <Scene>
+        <Scene fx:id="main_scene">
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="720.0" prefWidth="1280.0">
             <children>
-               <TabPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="720.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <TabPane fx:id="main_tab_pane" nodeOrientation="LEFT_TO_RIGHT" prefHeight="720.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                  <tabs>
                    <Tab text="FirstPage">
                         <content>
@@ -70,10 +76,13 @@
                                    <items>
                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                           <children>
-                                             <Button id="second_page_button" fx:id="second_page_button" mnemonicParsing="false" onAction="#onClicked" stylesheets="@css/all-styles.css" text="SecondPageButton" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+                                             <Button fx:id="second_page_button" mnemonicParsing="false" onAction="#onButtonClicked" prefHeight="37.0" prefWidth="166.0" style="-fx-background-radius: 25px; -fx-border-color: #000000;" stylesheets="@css/all-styles.css" text="SecondPageButton" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
                                                 <font>
                                                    <Font size="16.0" />
                                                 </font>
+                                                <cursor>
+                                                   <Cursor fx:constant="DEFAULT" />
+                                                </cursor>
                                              </Button>
                                           </children>
                                        </AnchorPane>
@@ -83,17 +92,17 @@
                                                <items>
                                                  <MenuItem mnemonicParsing="false" text="Make something good">
                                                       <graphic>
-                                                         <Button fx:id="second_page_good_button" mnemonicParsing="false" onAction="#onGoodThingDone" text="Good Button" />
+                                                         <Button fx:id="second_page_good_button" mnemonicParsing="false" onAction="#secondPageImageViewSetImage" text="Good Button" />
                                                       </graphic>
                                                    </MenuItem>
                                                  <MenuItem mnemonicParsing="false" text="Make something super good">
                                                       <graphic>
-                                                         <Button fx:id="second_page_super_good_button" mnemonicParsing="false" onAction="#onGoodThingDone" text="Super good button" />
+                                                         <Button fx:id="second_page_super_good_button" mnemonicParsing="false" onAction="#secondPageImageViewSetImage" text="Super good button" />
                                                       </graphic>
                                                    </MenuItem>
                                                    <MenuItem mnemonicParsing="false" text="Clear everything">
                                                       <graphic>
-                                                         <Button fx:id="second_page_clear_button1" mnemonicParsing="false" onAction="#onClear" text="Clear button" />
+                                                         <Button fx:id="second_page_clear_button" mnemonicParsing="false" onAction="#secondPageImageViewClear" text="Clear button" />
                                                       </graphic>
                                                    </MenuItem>
                                                    <MenuItem mnemonicParsing="false" text="It's a place for smth good">
@@ -110,8 +119,8 @@
                                                    <Font size="16.0" />
                                                 </font>
                                              </MenuButton>
-                                             <Button fx:id="second_page_button_back" layoutX="39.0" layoutY="106.0" mnemonicParsing="false" onAction="#backgroundChange" prefHeight="25.0" prefWidth="214.0" text="Changing color Button" />
-                                             <Text layoutX="14.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Press button once to set a timer for it to change color!" wrappingWidth="370.13671875" />
+                                             <Button fx:id="second_page_button_back" layoutX="39.0" layoutY="106.0" mnemonicParsing="false" onAction="#SecondPageButtonBackgroundChange" prefHeight="25.0" prefWidth="214.0" text="Changing color Button" />
+                                             <Text layoutX="50.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Press the button, change the color!" wrappingWidth="192.13671875" />
                                           </children>
                                        </AnchorPane>
                                    </items>
@@ -124,10 +133,8 @@
                         <content>
                            <AnchorPane prefHeight="200.0" prefWidth="200.0">
                               <children>
-                                 <Button id="third_page_button" fx:id="third_page_button" mnemonicParsing="false" onAction="#onClicked" text="ThirdPageButton" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
-                                    <font>
-                                       <Font size="16.0" />
-                                    </font></Button>
+                                 <ColorPicker fx:id="sixth_page_color_picker" />
+                                 <Spinner fx:id="sixth_page_spinner" layoutY="25.0" />
                               </children>
                            </AnchorPane>
                         </content>
@@ -138,7 +145,7 @@
                               <children>
                                  <VBox layoutX="6.0" layoutY="8.0" prefHeight="691.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                       <RadioButton mnemonicParsing="false" text="Radio Button 1">
+                                       <RadioButton fx:id="fourth_page_rb1" mnemonicParsing="false" text="Radio Button 1">
                                           <VBox.margin>
                                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                           </VBox.margin>
@@ -146,7 +153,7 @@
                                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                           </padding>
                                        </RadioButton>
-                                       <RadioButton mnemonicParsing="false" text="Radio Button 2">
+                                       <RadioButton fx:id="fourth_page_rb2" mnemonicParsing="false" text="Radio Button 2">
                                           <padding>
                                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                           </padding>
@@ -154,7 +161,7 @@
                                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                           </VBox.margin>
                                        </RadioButton>
-                                       <RadioButton mnemonicParsing="false" text="Radio Button 3">
+                                       <RadioButton fx:id="fourth_page_rb3" mnemonicParsing="false" text="Radio Button 3">
                                           <padding>
                                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                           </padding>
@@ -162,7 +169,7 @@
                                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                           </VBox.margin>
                                        </RadioButton>
-                                       <TextArea prefHeight="66.0" prefWidth="1240.0" promptText="Selected Radio Button: NaN">
+                                       <TextArea fx:id="fourth_page_text_area" prefHeight="66.0" prefWidth="1240.0" promptText="Selected Radio Button: NaN">
                                           <VBox.margin>
                                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                           </VBox.margin>
@@ -184,7 +191,7 @@
                               <children>
                                  <VBox layoutX="31.0" layoutY="14.0" prefHeight="691.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                       <TextField fx:id="fifth_tab_text_field">
+                                       <TextField fx:id="fifth_page_text_field_first">
                                           <VBox.margin>
                                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                           </VBox.margin>
@@ -192,7 +199,7 @@
                                              <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
                                           </padding>
                                        </TextField>
-                                       <TextField fx:id="fifth_tab_text_field_extra">
+                                       <TextField fx:id="fifth_page_text_field_second">
                                           <VBox.margin>
                                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                           </VBox.margin>
@@ -206,27 +213,12 @@
                            </AnchorPane>
                        </content>
                      </Tab>
-                     <Tab fx:id="sixth_page" text="sixthPage">
+                     <Tab text="sixthPage">
                        <content>
                          <AnchorPane fx:id="sixth_page_pane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                               <children>
                                  <VBox fx:id="sixth_page_vbox" prefHeight="691.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                       <ToolBar fx:id="sixth_page_toolbar" prefHeight="45.0" prefWidth="97.0">
-                                         <items>
-                                           <Button mnemonicParsing="false" text="Button" />
-                                             <Button mnemonicParsing="false" text="Button" />
-                                             <Button mnemonicParsing="false" text="Button" />
-                                         </items>
-                                          <padding>
-                                             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                          </padding>
-                                       </ToolBar>
-                                       <ColorPicker fx:id="sixth_page_color_picker">
-                                          <VBox.margin>
-                                             <Insets top="20.0" />
-                                          </VBox.margin>
-                                       </ColorPicker>
                                        <HBox fx:id="sixth_page_hbox" prefHeight="86.0" prefWidth="1240.0">
                                           <children>
                                              <ProgressBar fx:id="sixth_page_progress_bar" prefWidth="200.0" progress="0.0" />
@@ -261,7 +253,6 @@
                                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                           </padding>
                                        </HBox>
-                                       <Spinner fx:id="sixth_page_spinner" />
                                     </children>
                                     <padding>
                                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -273,7 +264,82 @@
                      </Tab>
                      <Tab text="seventhPage">
                        <content>
-                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                           <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+                               <children>
+                                   <VBox layoutX="290.0" layoutY="14.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                           <MenuBar>
+                                               <menus>
+                                                   <Menu mnemonicParsing="false" text="File">
+                                                       <items>
+                                                           <MenuItem mnemonicParsing="false" onAction="#seventhPageFileManagerOpen" text="New" />
+                                                           <MenuItem mnemonicParsing="false" text="Open" />
+                                                           <MenuItem mnemonicParsing="false" text="Close" />
+                                                           <SeparatorMenuItem mnemonicParsing="false" />
+                                                           <RadioMenuItem fx:id="menu_auto_save" mnemonicParsing="false" text="Auto save" />
+                                                           <RadioMenuItem fx:id="menu_manual_save" mnemonicParsing="false" text="Manual save" />
+                                                           <SeparatorMenuItem mnemonicParsing="false" />
+                                                           <CustomMenuItem mnemonicParsing="false" text="Settings">
+                                                               <content>
+                                                                   <CheckBox text="Do not send notifications" />
+                                                               </content>
+                                                           </CustomMenuItem>
+                                                       </items>
+                                                   </Menu>
+                                                   <Menu mnemonicParsing="false" text="Edit">
+                                                       <items>
+                                                           <MenuItem mnemonicParsing="false" text="Delete" />
+                                                       </items>
+                                                   </Menu>
+                                               </menus>
+                                           </MenuBar>
+                                           <HBox fx:id="seventh_page_new_file_creater" prefHeight="400.0" prefWidth="1280.0">
+                                               <children>
+                                                   <AnchorPane prefHeight="400.0" prefWidth="400.0">
+                                                       <children>
+                                                           <HBox prefHeight="25.0" prefWidth="400.0">
+                                                               <children>
+                                                                   <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                                                       <HBox.margin>
+                                                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                                       </HBox.margin>
+                                                                   </ImageView>
+                                                                   <TextField prefHeight="25.0" prefWidth="360.0" text="New file" />
+                                                                   <Button mnemonicParsing="false" onAction="#seventhPageFileManagerClose" prefHeight="20.0" prefWidth="20.0" text="X" />
+                                                               </children>
+                                                           </HBox>
+                                                           <SplitPane fx:id="seventh_pane_split_pane" dividerPositions="0.29797979797979796" layoutY="25.0" prefHeight="376.0" prefWidth="400.0">
+                                                               <items>
+                                                                   <AnchorPane fx:id="seventh_page_split_pane_left_pane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                                                       <children>
+                                                               <ScrollPane layoutX="-2.0" prefHeight="374.0" prefWidth="119.0">
+                                                                 <content>
+                                                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="639.0" prefWidth="104.0">
+                                                                        <children>
+                                                                           <VBox layoutX="2.0" layoutY="39.0" prefHeight="639.0" prefWidth="104.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                              <children>
+                                                                                 <Button mnemonicParsing="false" prefHeight="200.0" prefWidth="104.0" text="Item 1" />
+                                                                                 <Button mnemonicParsing="false" prefHeight="200.0" prefWidth="104.0" text="Item 2" />
+                                                                                 <Button mnemonicParsing="false" prefHeight="200.0" prefWidth="104.0" text="Item 3" />
+                                                                              </children>
+                                                                           </VBox>
+                                                                        </children>
+                                                                     </AnchorPane>
+                                                                 </content>
+                                                               </ScrollPane>
+                                                                       </children>
+                                                                   </AnchorPane>
+                                                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+                                                               </items>
+                                                           </SplitPane>
+                                                       </children>
+                                                   </AnchorPane>
+                                               </children>
+                                           </HBox>
+                                       </children>
+                                   </VBox>
+                               </children>
+                           </AnchorPane>
                        </content>
                      </Tab>
                  </tabs>
