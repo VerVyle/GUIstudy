@@ -1,20 +1,29 @@
 package com.vervyle.guistudy.controllers;
 
+import com.vervyle.guistudy.events.ValueChangedEvent;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
+import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
+
+import static java.lang.Math.ceil;
+import static java.lang.Math.sqrt;
 
 public class ButtonController implements Initializable {
 
@@ -60,6 +69,12 @@ public class ButtonController implements Initializable {
     AnchorPane seventh_page_split_pane_left_pane;
     @FXML
     SplitPane seventh_pane_split_pane;
+    @FXML
+    ColorPicker third_page_color_picker;
+    @FXML
+    GridPane third_page_grid;
+    @FXML
+    Spinner<Integer> third_page_spinner;
 
     @FXML
     void onButtonClicked(ActionEvent actionEvent) {
@@ -71,6 +86,10 @@ public class ButtonController implements Initializable {
         System.out.println("FirstPage is initialized");
     }
 
+    /**
+     * @param path to your resource
+     * @return file stream to resource
+     */
     private FileInputStream makeFileInputStream(String path) {
         FileInputStream inputStream = null;
         try {
@@ -116,7 +135,29 @@ public class ButtonController implements Initializable {
         System.out.println("SecondPage is initialized");
     }
 
+    private void spinnerInit() {
+        SpinnerValueFactory<Integer> spinnerValueFactory =
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 256, 1);
+        third_page_spinner.setValueFactory(spinnerValueFactory);
+        third_page_spinner.setEditable(true);
+    }
+
+    private void thirdPageColorPickerInit() {
+        third_page_color_picker.setOnAction(actionEvent -> {
+            ObservableList<Node> list = third_page_grid.getChildren();
+            Color color = third_page_color_picker.getValue();
+            for (int i = 0; i < list.size(); i++) {
+                AnchorPane anchorPane = (AnchorPane) list.get(i);
+                String rgbColor = "rgb(" + color.getRed() * 256 + "," + color.getGreen() * 256 + "," + color.getBlue() * 256 + ");";
+                int value = third_page_spinner.getValue();
+                anchorPane.setStyle("-fx-background-color:" + rgbColor + ";-fx-background-insets:" + value + "px");
+            }
+        });
+    }
+
     private void thirdPageInit() {
+        spinnerInit();
+        thirdPageColorPickerInit();
         System.out.println("ThirdPage is initialized");
     }
 
