@@ -1,7 +1,5 @@
 package com.vervyle.guistudy.controllers;
 
-import com.vervyle.guistudy.events.Person;
-import com.vervyle.guistudy.events.PersonEvent;
 import com.vervyle.guistudy.events.TestEvent;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,6 +7,7 @@ import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventDispatchChain;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -106,6 +105,7 @@ public class ButtonController implements Initializable {
     }
 
     private void firstPageInit() {
+        eventFireInit();
         System.out.println("FirstPage is initialized");
     }
 
@@ -335,37 +335,21 @@ public class ButtonController implements Initializable {
     }
 
     private void eventFireInit() {
-//        first_page_event_fire.setOnMouseClicked(event -> {
-//            first_page_event_fire.fireEvent(new TestEvent(
-//                    first_page_event_fire,
-//                    first_page_event_handler,
-//                    TestEvent.TEST_EVENT_GOOD));
-//        });
-        first_page_event_fire.setOnMouseClicked(mouseEvent -> {
-            first_page_event_fire.fireEvent(new PersonEvent(PersonEvent.PERSON_SAVE, new Person("Alex")));
+        first_page_event_fire.setOnMouseClicked(actionEvent -> {
+            first_page_event_fire.fireEvent(new TestEvent(
+                    first_page_event_fire,
+                    first_page_event_handler,
+                    TestEvent.TEST_EVENT_GOOD));
         });
-    }
-
-    private void eventHandlerInit() {
-//        first_page_event_handler.addEventFilter(TestEvent.TEST_EVENT_GOOD, testEvent -> {
-//            first_page_event_handler.setText("YES!");
-//            System.out.println("HANDLED!");
-//        });
-        first_page_event_handler.addEventFilter(PersonEvent.ANY, personEvent -> {
-            first_page_event_handler.setText("YES!");
-            System.out.println("HANDLED!");
+        first_page_event_fire.addEventHandler(TestEvent.TEST_EVENT_GOOD, testEvent -> {
+            first_page_event_handler.setText("Test event handled!");
+            System.out.println("Event: " + testEvent.getClass().getName() + ", handled in " + "first_page_event_fire");
         });
     }
 
     @FXML
     private void keyPressed(KeyEvent keyEvent) {
-        if (keyEvent.getCode().equals(KeyCode.SHIFT))
-            return;
-        if (keyEvent.isShiftDown()) {
-            System.out.print(keyEvent.getCode().toString().toUpperCase());
-            return;
-        }
-        System.out.print(keyEvent.getCode().toString().toLowerCase());
+        System.out.println("Pressed key: " + keyEvent.getCode());
     }
 
     private void lastPageInit() {
@@ -397,8 +381,6 @@ public class ButtonController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        eventFireInit();
-        eventHandlerInit();
         firstPageInit();
         secondPageInit();
         thirdPageInit();
