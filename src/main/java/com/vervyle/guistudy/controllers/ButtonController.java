@@ -3,6 +3,7 @@ package com.vervyle.guistudy.controllers;
 import com.vervyle.guistudy.events.Person;
 import com.vervyle.guistudy.events.PersonEvent;
 import com.vervyle.guistudy.events.TestEvent;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -20,11 +21,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import java.io.Console;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
+
+import static java.lang.Runtime.getRuntime;
 
 public class ButtonController implements Initializable {
 
@@ -82,6 +86,18 @@ public class ButtonController implements Initializable {
     Spinner<Integer> third_page_spinner;
     @FXML
     TextField last_page_text_field;
+    @FXML
+    MenuItem last_page_context_menu;
+    @FXML
+    ComboBox<String> last_page_combo_box;
+    @FXML
+    PasswordField last_page_password_field;
+    @FXML
+    Slider last_page_slider;
+    @FXML
+    Label last_page_message;
+    @FXML
+    Label last_page_value;
 
     @FXML
     void onButtonClicked(ActionEvent actionEvent) {
@@ -231,17 +247,6 @@ public class ButtonController implements Initializable {
         });
     }
 
-    @FXML
-    private void keyPressed(KeyEvent keyEvent) {
-        if (keyEvent.getCode().equals(KeyCode.SHIFT))
-            return;
-        if (keyEvent.isShiftDown()) {
-            System.out.print(keyEvent.getCode().toString().toUpperCase());
-            return;
-        }
-        System.out.print(keyEvent.getCode().toString().toLowerCase());
-    }
-
     private void fifthPageInit() {
         fifthPageEventHandlersInit();
         System.out.println("FifthPage is initialized");
@@ -352,6 +357,44 @@ public class ButtonController implements Initializable {
         });
     }
 
+    @FXML
+    private void keyPressed(KeyEvent keyEvent) {
+        if (keyEvent.getCode().equals(KeyCode.SHIFT))
+            return;
+        if (keyEvent.isShiftDown()) {
+            System.out.print(keyEvent.getCode().toString().toUpperCase());
+            return;
+        }
+        System.out.print(keyEvent.getCode().toString().toLowerCase());
+    }
+
+    private void lastPageInit() {
+        last_page_context_menu.setOnAction(actionEvent -> {
+            for (int i = 0; i <= 10; i++)
+                System.out.println("\n");
+        });
+        ObservableList<String> stringObservableList = FXCollections.observableArrayList("Java", "JavaScript", "C#", "Python");
+        last_page_combo_box.setItems(stringObservableList);
+        last_page_slider.setValue(0);
+        last_page_slider.setShowTickLabels(true);
+        last_page_slider.snapToTicksProperty().set(true);
+        last_page_slider.setShowTickMarks(true);
+        last_page_slider.setOnMouseReleased(mouseEvent -> {
+            last_page_value.setText("Value: " + (int) last_page_slider.getValue());
+        });
+        double value = last_page_slider.getValue();
+        last_page_password_field.setOnAction(actionEvent -> {
+            if (!last_page_password_field.getText().equals("123")) {
+                last_page_message.setText("Your password is incorrect!");
+                last_page_message.setTextFill(Color.rgb(210, 39, 30));
+            } else {
+                last_page_message.setText("Your password is correct!");
+                last_page_message.setTextFill(Color.rgb(21, 117, 84));
+            }
+            last_page_password_field.clear();
+        });
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         eventFireInit();
@@ -363,5 +406,6 @@ public class ButtonController implements Initializable {
         fifthPageInit();
         sixthPageInit();
         seventhPageInit();
+        lastPageInit();
     }
 }
