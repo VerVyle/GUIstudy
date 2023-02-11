@@ -26,6 +26,11 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.effect.BoxBlur?>
+<?import javafx.scene.effect.GaussianBlur?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -51,22 +56,29 @@
                         <content>
                            <AnchorPane prefHeight="200.0" prefWidth="200.0">
                               <children>
-                                 <HBox fillHeight="false" prefHeight="35.0" prefWidth="1261.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+                                 <VBox layoutX="20.0" layoutY="20.0" prefHeight="105.0" prefWidth="1261.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
                                     <children>
-                                       <Label text="Last button clicked:">
-                                          <font>
-                                             <Font size="16.0" />
-                                          </font>
-                                       </Label>
-                                       <TextField id="first_page_text_field" fx:id="first_page_text_field" prefHeight="35.0" prefWidth="1091.0">
-                                          <font>
-                                             <Font size="16.0" />
-                                          </font></TextField>
+                                       <HBox fillHeight="false" prefHeight="35.0" prefWidth="1261.0">
+                                          <children>
+                                             <Label text="Last button clicked:">
+                                                <font>
+                                                   <Font size="16.0" />
+                                                </font>
+                                             </Label>
+                                             <TextField id="first_page_text_field" fx:id="first_page_text_field" prefHeight="35.0" prefWidth="1091.0">
+                                                <font>
+                                                   <Font size="16.0" />
+                                                </font>
+                                             </TextField>
+                                          </children>
+                                          <opaqueInsets>
+                                             <Insets />
+                                          </opaqueInsets>
+                                       </HBox>
                                     </children>
-                                    <opaqueInsets>
-                                       <Insets />
-                                    </opaqueInsets>
-                                 </HBox>
+                                 </VBox>
+                                 <TextField fx:id="first_page_event_handler" layoutX="141.0" layoutY="200.0" />
+                                 <Button fx:id="first_page_event_fire" layoutX="170.0" layoutY="233.0" mnemonicParsing="false" text="Fire testEvent!" />
                               </children>
                            </AnchorPane>
                         </content>
@@ -259,7 +271,28 @@
                                     <children>
                                        <HBox fx:id="sixth_page_hbox" prefHeight="86.0" prefWidth="1240.0">
                                           <children>
-                                             <ProgressBar fx:id="sixth_page_progress_bar" prefWidth="200.0" progress="0.0" />
+                                             <ProgressBar fx:id="sixth_page_progress_bar" prefWidth="200.0" progress="0.0">
+                                                <opaqueInsets>
+                                                   <Insets />
+                                                </opaqueInsets>
+                                                <effect>
+                                                   <Lighting diffuseConstant="1.02" specularConstant="0.67" specularExponent="14.94" surfaceScale="1.38">
+                                                      <bumpInput>
+                                                         <Shadow height="0.0" radius="22.335" width="91.34">
+                                                            <input>
+                                                               <BoxBlur width="0.0">
+                                                                  <input>
+                                                                     <GaussianBlur radius="63.0" />
+                                                                  </input>
+                                                               </BoxBlur>
+                                                            </input>
+                                                         </Shadow>
+                                                      </bumpInput>
+                                                      <light>
+                                                         <Light.Distant azimuth="0.0" elevation="49.14" />
+                                                      </light>
+                                                   </Lighting>
+                                                </effect></ProgressBar>
                                              <ProgressIndicator fx:id="sixth_page_progress_indicator" progress="0.0">
                                                 <HBox.margin>
                                                    <Insets left="20.0" />
@@ -278,7 +311,7 @@
                                                    <Insets left="20.0" />
                                                 </HBox.margin>
                                              </VBox>
-                                             <TextField fx:id="sixth_page_text_field">
+                                             <TextField fx:id="sixth_page_text_field" onKeyPressed="#keyPressed">
                                                 <HBox.margin>
                                                    <Insets left="20.0" />
                                                 </HBox.margin>
@@ -379,6 +412,34 @@
                                </children>
                            </AnchorPane>
                        </content>
+                     </Tab>
+                     <Tab text="LastPage">
+                        <content>
+                           <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                              <children>
+                                 <HBox fillHeight="false" prefHeight="35.0" prefWidth="1261.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+                                    <children>
+                                       <Label text="Type text:">
+                                          <font>
+                                             <Font size="16.0" />
+                                          </font>
+                                          <HBox.margin>
+                                             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                          </HBox.margin>
+                                       </Label>
+                                       <TextField id="first_page_text_field" fx:id="last_page_text_field" onKeyPressed="#keyPressed" prefHeight="35.0" prefWidth="1091.0">
+                                          <font>
+                                             <Font size="16.0" />
+                                          </font>
+                                       </TextField>
+                                    </children>
+                                    <opaqueInsets>
+                                       <Insets />
+                                    </opaqueInsets>
+                                 </HBox>
+                              </children>
+                           </AnchorPane>
+                        </content>
                      </Tab>
                  </tabs>
                   <cursor>

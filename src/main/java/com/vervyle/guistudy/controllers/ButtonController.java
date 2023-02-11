@@ -1,32 +1,37 @@
 package com.vervyle.guistudy.controllers;
 
-import com.vervyle.guistudy.events.ValueChangedEvent;
+import com.vervyle.guistudy.events.Person;
+import com.vervyle.guistudy.events.PersonEvent;
+import com.vervyle.guistudy.events.TestEvent;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.event.Event;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
-import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 
-import static java.lang.Math.ceil;
-import static java.lang.Math.sqrt;
-
 public class ButtonController implements Initializable {
 
+    @FXML
+    private TextField first_page_event_handler;
+    @FXML
+    private Button first_page_event_fire;
     @FXML
     private RadioButton fourth_page_rb1;
     @FXML
@@ -75,6 +80,8 @@ public class ButtonController implements Initializable {
     GridPane third_page_grid;
     @FXML
     Spinner<Integer> third_page_spinner;
+    @FXML
+    TextField last_page_text_field;
 
     @FXML
     void onButtonClicked(ActionEvent actionEvent) {
@@ -224,6 +231,17 @@ public class ButtonController implements Initializable {
         });
     }
 
+    @FXML
+    private void keyPressed(KeyEvent keyEvent) {
+        if (keyEvent.getCode().equals(KeyCode.SHIFT))
+            return;
+        if (keyEvent.isShiftDown()) {
+            System.out.print(keyEvent.getCode().toString().toUpperCase());
+            return;
+        }
+        System.out.print(keyEvent.getCode().toString().toLowerCase());
+    }
+
     private void fifthPageInit() {
         fifthPageEventHandlersInit();
         System.out.println("FifthPage is initialized");
@@ -311,8 +329,33 @@ public class ButtonController implements Initializable {
         System.out.println("SeventhPage is initialized");
     }
 
+    private void eventFireInit() {
+//        first_page_event_fire.setOnMouseClicked(event -> {
+//            first_page_event_fire.fireEvent(new TestEvent(
+//                    first_page_event_fire,
+//                    first_page_event_handler,
+//                    TestEvent.TEST_EVENT_GOOD));
+//        });
+        first_page_event_fire.setOnMouseClicked(mouseEvent -> {
+            first_page_event_fire.fireEvent(new PersonEvent(PersonEvent.PERSON_SAVE, new Person("Alex")));
+        });
+    }
+
+    private void eventHandlerInit() {
+//        first_page_event_handler.addEventFilter(TestEvent.TEST_EVENT_GOOD, testEvent -> {
+//            first_page_event_handler.setText("YES!");
+//            System.out.println("HANDLED!");
+//        });
+        first_page_event_handler.addEventFilter(PersonEvent.ANY, personEvent -> {
+            first_page_event_handler.setText("YES!");
+            System.out.println("HANDLED!");
+        });
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        eventFireInit();
+        eventHandlerInit();
         firstPageInit();
         secondPageInit();
         thirdPageInit();
